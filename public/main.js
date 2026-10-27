@@ -13,6 +13,8 @@ const botonBorrar = document.querySelector("#borrar-todo");
 const botonSubir = document.querySelector("#subir-servidor");
 const botonBajar = document.querySelector("#bajar-servidor");
 let misiones = [];
+let cQuest=0;
+let questSave = [];
 
 
 formulario.addEventListener("submit", (evento) => {
@@ -23,8 +25,9 @@ formulario.addEventListener("submit", (evento) => {
 botonBorrar.addEventListener("click", borrarTodo);
 
 function agregarMision() {
-  // TODO
-  // crear objeto misión, incluir los valores de los campos y un id único
+  let mision = {titulo: campoTitulo.value, descripcion: campoDescripcion.value, dificultad: campoDificultad.value, recompensa: campoRecompensa.value};
+  misiones.push(mision);
+  mostrarMisiones();
 }
 
 function mostrarMisiones() {
@@ -33,11 +36,9 @@ function mostrarMisiones() {
     listaVacia.textContent = "Todavía no hay misiones.";
   } else {
     listaVacia.textContent = "";
+    misiones.forEach(mision => mostrarMision(mision));
+    }
   }
-
-  // TODO: Recorre el array misiones y llama a mostrarMision(mision)
-  // para cada misión.
-}
 
 function mostrarMision(mision) {
   const elemento = document.createElement("li");
@@ -60,17 +61,28 @@ function mostrarMision(mision) {
   elemento.appendChild(descripcion);
   elemento.appendChild(dificultad);
   elemento.appendChild(recompensa);
-
   lista.appendChild(elemento);
 }
 
 function guardarMisiones() {
+  let save = JSON.stringify(misiones);
+  localStorage.setItem("QuestSaved"+cQuest, save);
+  cQuest++;
 }
 
 function cargarMisiones() {
+  if (localStorage.length>0){
+      questSave = JSON.parse(localStorage.getItem("QuestSaved"+(cQuest-1)));
+      misiones = questSave;
+  }
 }
 
 function borrarTodo() {
+  guardarMisiones();
+  localStorage.clear('clear');
+  lista.innerHTML = "";
+  listaVacia.textContent = "Todavía no hay misiones.";
+  misiones=[];
 }
 
 cargarMisiones();
