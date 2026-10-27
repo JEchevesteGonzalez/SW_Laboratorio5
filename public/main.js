@@ -24,6 +24,7 @@ botonBorrar.addEventListener("click", borrarTodo);
 
 function agregarMision() {
   // TODO
+  // crear objeto misión, incluir los valores de los campos y un id único
 }
 
 function mostrarMisiones() {
